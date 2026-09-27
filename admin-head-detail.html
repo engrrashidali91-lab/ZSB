@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Team Status — ZSB</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <span class="brand-mark">Z</span>
+        <strong>ZSB</strong>
+      </div>
+
+      <nav class="nav-list" id="navList"></nav>
+
+      <div class="sidebar-note">
+        <strong>Demo build</strong>
+        Sample data. Engineering, Tenders and Store &amp; Inventory show real records — General has no workspace built yet.
+      </div>
+    </aside>
+
+    <div class="main-area">
+      <header class="topbar">
+        <div></div>
+        <div class="user-box">
+          <div class="user-avatar" id="userAvatar"></div>
+          <div class="user-identity">
+            <span id="userName"></span>
+            <span class="role-tag">Admin</span>
+          </div>
+          <a href="profile.html" class="btn btn-ghost btn-sm">Profile</a>
+          <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
+        </div>
+      </header>
+
+      <main class="container">
+        <p class="eyebrow"><a href="admin-team-status.html" class="btn-link">← Team Status</a></p>
+        <div style="display:flex; align-items:center; gap:14px; margin-bottom:20px;">
+          <div class="user-avatar" id="headAvatar"></div>
+          <div>
+            <h1 id="headName" style="margin:0;">—</h1>
+            <p class="muted" id="headSubtitle" style="margin:2px 0 0;"></p>
+          </div>
+        </div>
+
+        <div id="statusCard"></div>
+
+        <div class="layout-grid stretch" style="margin-top:20px;">
+          <section class="card main-col">
+            <div class="card-head">
+              <h2>Assigned projects</h2>
+            </div>
+            <div id="projectsList"></div>
+          </section>
+
+          <aside class="card side-col">
+            <nav class="tabs" id="detailTabs" style="margin-bottom:12px;">
+              <button class="tab-btn" data-tab="inbox">Inbox</button>
+              <button class="tab-btn active" data-tab="admin">To Admin</button>
+              <button class="tab-btn" data-tab="heads">To other heads</button>
+            </nav>
+            <div id="detailPanel"></div>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/admin-head-detail.js"></script>
+</body>
+</html>

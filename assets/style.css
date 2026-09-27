@@ -1,0 +1,1343 @@
+/* ZSB — shared styles (light theme) */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+[hidden] { display: none !important; }
+
+/* Colour/spacing scale matched 1:1 to Tailwind's slate/amber palette (the
+   values below are the literal Tailwind hex codes, named to the utility
+   they stand in for), so the app reads as the same design language as the
+   Tailwind-based mockups without loading Tailwind itself — its CDN build
+   ships a global preflight reset (on h1–h6, button, input, ul, etc.) that
+   would fight the typographic rules already set below across every page. */
+:root {
+  --bg: #f8fafc;             /* slate-50 */
+  --card: #ffffff;
+  --card-alt: #f1f5f9;       /* slate-100 */
+  --border: #e2e8f0;         /* slate-200 */
+  --border-strong: #cbd5e1;  /* slate-300 */
+  --text: #1e293b;           /* slate-800 */
+  --text-muted: #64748b;     /* slate-500 */
+
+  --amber: #b45309;          /* amber-700 — on-light amber text (type tags) */
+  --amber-solid: #f59e0b;    /* amber-500 — primary buttons */
+  --amber-dark: #d97706;     /* amber-600 — primary button hover */
+  --amber-ink: #1e293b;      /* slate-800 — text on amber-500/600 fills */
+  --amber-bg: #fef3c7;       /* amber-100 */
+
+  --green: #047857;          /* emerald-700 */
+  --green-solid: #10b981;    /* emerald-500 — progress fill */
+  --green-bg: #d1fae5;       /* emerald-100 */
+
+  --red: #b91c1c;            /* red-700 */
+  --red-bg: #fee2e2;         /* red-100 */
+
+  --blue: #1d4ed8;
+  --blue-bg: #dbeafe;
+
+  --purple: #7e22ce;
+  --purple-bg: #f3e8ff;
+
+  --orange: #c2410c;
+  --orange-bg: #ffedd5;
+
+  --pink: #be185d;
+  --pink-bg: #fce7f3;
+
+  --teal: #0f766e;
+  --teal-bg: #ccfbf1;
+
+  --gray-bg: #f1f5f9;        /* slate-100 */
+
+  --sidebar-bg: #0f172a;     /* slate-900, flat */
+  --sidebar-border: #1e293b; /* slate-800 */
+  --sidebar-text: #cbd5e1;   /* slate-300 */
+  --sidebar-hover: #1e293b;  /* slate-800 */
+  --sidebar-muted: #64748b;  /* slate-500 — group labels */
+
+  --radius: 12px;    /* rounded-xl */
+  --radius-sm: 8px;  /* rounded-lg */
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow: 0 1px 2px rgba(15, 23, 42, 0.05), 0 1px 3px rgba(15, 23, 42, 0.06);
+  --shadow-hover: 0 4px 6px rgba(15, 23, 42, 0.07), 0 10px 15px rgba(15, 23, 42, 0.08);
+}
+
+* { box-sizing: border-box; }
+
+/* Always reserve the vertical scrollbar's width, even on pages short enough
+   not to need one. Without this, a tall page (e.g. Engineering, with its
+   filters + document table) gets a scrollbar that a shorter page (e.g.
+   Tenders) doesn't — shrinking that page's available width by ~15px and
+   shifting its right-hand gutter relative to every other page. */
+html {
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3 { margin: 0 0 4px; color: var(--text); font-weight: 700; letter-spacing: -0.012em; }
+h1 { font-size: 23px; letter-spacing: -0.02em; }
+h2 { font-size: 16px; }
+h3 { font-size: 14.5px; }
+
+p { margin: 0 0 8px; line-height: 1.55; }
+
+.muted { color: var(--text-muted); }
+.small { font-size: 12.5px; }
+
+a { color: var(--amber); }
+
+button, input, select, textarea { font-family: inherit; }
+
+:focus-visible {
+  outline: 2px solid var(--amber-solid);
+  outline-offset: 2px;
+}
+
+/* ---- layout ---- */
+
+.container {
+  /* Explicit width (not just max-width) matters here: .container is a flex
+     item inside .main-area (a column flex container). A flex item with
+     auto margins on its cross axis does NOT stretch to fill available
+     space per the flexbox spec — it sizes to its own content instead, and
+     the auto margins just centre whatever's left over. Without this,
+     pages with wide content (e.g. a many-column table) happen to hit the
+     available-width ceiling and look correctly full-width, while pages
+     with narrower content shrink-wrap around it — the exact gap this
+     fixes. Width 100% forces a definite cross size, so it always fills
+     available space up to max-width regardless of content. */
+  width: 100%;
+  /* A flat 1200px cap leaves huge unused gutters on a wide/ultrawide
+     monitor. clamp() keeps normal laptop widths exactly as before (below
+     ~1585px viewport this still resolves to 1200px) but lets the content
+     column grow — moderately, not edge-to-edge — as the window gets wider,
+     so extra space goes toward showing more, not just bigger margins. */
+  max-width: clamp(1200px, 80vw, 1600px);
+  margin: 0 auto;
+  padding: 26px 20px 60px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  border-bottom: 1px solid var(--border);
+  padding: 13px 24px;
+}
+
+.brand-mini {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.1px;
+}
+
+.brand-mini .brand-mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: var(--amber-solid);
+  color: var(--amber-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.user-box {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--amber-dark);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12.5px;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+}
+
+.user-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  line-height: 1;
+  margin-right: 2px;
+}
+
+.user-identity #userName {
+  font-weight: 600;
+  font-size: 13.5px;
+  color: var(--text);
+}
+
+.role-tag {
+  background: var(--gray-bg);
+  border: 1px solid var(--border);
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  align-self: flex-start;
+}
+
+.breadcrumb {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.breadcrumb a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.breadcrumb a:hover { color: var(--amber); }
+.breadcrumb .sep { color: #b7bec9; }
+.breadcrumb .current { color: var(--text-muted); font-weight: 500; }
+
+.page-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.project-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.eyebrow {
+  font-family: 'SFMono-Regular', Consolas, Menlo, monospace;
+  font-size: 12px;
+  color: var(--amber);
+  letter-spacing: 0.03em;
+  margin: 0 0 6px;
+}
+
+.layout-grid {
+  display: grid;
+  grid-template-columns: 2.1fr 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+/* Opt-in modifier: matches both columns' height to whichever is naturally
+   taller, instead of each sizing to its own content. Scoped to specific
+   sections (not the base class) since stretching every .layout-grid on
+   every page isn't always wanted — e.g. a short "Pending Approvals" list
+   stretched to match a long one elsewhere would look like padding, not a
+   design choice. */
+.layout-grid.stretch { align-items: stretch; }
+
+/* Grid tracks default to an implicit min-width of auto (content-based), not
+   0 — so a child with wide intrinsic content (a tab bar with a long label,
+   a wide table) forces its whole column wider than its fr share, pushing
+   the grid past the page instead of scrolling inside itself. Every
+   .layout-grid column needs to be allowed to shrink below that. */
+.main-col, .side-col { min-width: 0; }
+
+/* Team & Activity tab bar (dashboard.html's aside) has more tabs than a
+   narrow side-col card can fit on one line at the shared .tabs gap/size —
+   wrap onto a second line instead of relying on a hidden horizontal
+   scroll a user has no visual cue to find. */
+#teamTabs {
+  gap: 8px 14px;
+  flex-wrap: wrap;
+  overflow-x: visible;
+}
+#teamTabs .tab-btn { font-size: 12.5px; }
+
+@media (max-width: 860px) {
+  .layout-grid { grid-template-columns: 1fr; }
+}
+
+section.block { margin-bottom: 28px; }
+.section-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.section-title h2 { margin-bottom: 2px; font-size: 17px; }
+.section-title p { margin: 0; }
+
+/* ---- department / page tabs ---- */
+
+.tabs {
+  display: flex;
+  gap: 24px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+  overflow-x: auto;
+}
+
+/* A scrolling tab bar with no scrollbar and no fade hint just looks like a
+   label got cut off mid-word ("Instructions" reading as "Instr") — wrapping
+   onto a second line on a narrow screen keeps every tab fully readable and
+   makes "there's more" obvious without relying on a swipe no one's cued to
+   try. Gap shrinks a little too, since 24px between short wrapped rows
+   reads as more separation than intended. */
+@media (max-width: 600px) {
+  .tabs { flex-wrap: wrap; overflow-x: visible; row-gap: 6px; gap: 8px 20px; }
+}
+
+.tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 13.5px;
+  padding: 10px 1px 12px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+
+.tab-btn:hover { color: var(--text); }
+
+.tab-btn.active {
+  color: var(--text);
+  border-bottom-color: var(--amber-solid);
+}
+
+/* ---- cards ---- */
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 22px;
+  margin-bottom: 18px;
+}
+
+/* A card that's really a link to a detail view (e.g. a Team Status card
+   opening that head's own page) — same lift-on-hover affordance used
+   elsewhere for clickable rows, so it reads as clickable before the click. */
+.card.clickable { cursor: pointer; transition: box-shadow 0.15s ease, transform 0.15s ease; }
+.card.clickable:hover { box-shadow: var(--shadow-hover); transform: translateY(-1px); }
+
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.card-head-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* small coloured icon badge used in a card-head, e.g. .card-icon.blue */
+.card-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.card-icon .icon { width: 16px; height: 16px; }
+.card-icon.amber { background: var(--amber-bg); color: var(--amber); }
+.card-icon.blue { background: var(--blue-bg); color: var(--blue); }
+.card-icon.purple { background: var(--purple-bg); color: var(--purple); }
+.card-icon.teal { background: var(--teal-bg); color: var(--teal); }
+.card-icon.green { background: var(--green-bg); color: var(--green); }
+
+/* ---- respond-with-text/document inboxes (instructions, requests, messages) ---- */
+
+.reply-box {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--card-alt);
+}
+.reply-box textarea { margin-top: 0; }
+.reply-box input[type="file"] { margin-top: 8px; }
+.reply-box .error { margin: 8px 0 0; }
+
+.response-block {
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-left: 3px solid var(--blue);
+  background: var(--blue-bg);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 13px;
+}
+
+/* ---- profile page ---- */
+
+.profile-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13.5px;
+}
+.profile-row:last-of-type { border-bottom: none; }
+.profile-label { color: var(--text-muted); font-weight: 600; }
+
+/* ---- buttons ---- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 8px 15px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--gray-bg);
+  color: var(--text);
+  transition: filter 0.15s ease, transform 0.05s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.btn:hover { filter: brightness(0.97); }
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-primary {
+  background: var(--amber-solid);
+  color: var(--amber-ink);
+}
+.btn-primary:hover { background: var(--amber-dark); filter: none; }
+
+.btn-secondary { background: var(--card); border-color: var(--border-strong); color: var(--text); }
+
+.btn-ghost { background: transparent; border-color: var(--border-strong); color: var(--text); }
+.btn-ghost:hover { background: var(--gray-bg); }
+
+.btn-sm { padding: 6px 11px; font-size: 12.5px; }
+.btn-block { width: 100%; justify-content: center; }
+.btn-link { background: none; border: none; color: var(--amber); text-decoration: underline; padding: 0; font-weight: 600; cursor: pointer; }
+
+.icon { width: 15px; height: 15px; flex-shrink: 0; display: inline-block; vertical-align: -2px; }
+
+/* ---- forms ---- */
+
+label {
+  display: block;
+  font-weight: 600;
+  font-size: 13px;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
+input[type="text"],
+input[type="password"],
+input[type="file"],
+select,
+textarea {
+  display: block;
+  width: 100%;
+  margin-top: 5px;
+  padding: 9px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  font-family: inherit;
+  background: var(--card);
+  color: var(--text);
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--amber-solid);
+}
+
+textarea { resize: vertical; }
+
+input[type="range"] { width: 100%; margin-top: 8px; accent-color: var(--amber-solid); }
+input[type="checkbox"] { width: 15px; height: 15px; accent-color: var(--amber-solid); cursor: pointer; }
+
+/* ---- task checklist (drives a document's progress) ---- */
+
+.task-progress-summary { margin-bottom: 14px; }
+.task-progress-summary p { margin: 6px 0 0; }
+
+.task-list {
+  list-style: none;
+  margin: 0 0 14px;
+  padding: 0;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.task-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 4px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.task-row:last-child { border-bottom: none; }
+
+.task-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+  font-weight: 400;
+  margin-bottom: 0;
+  cursor: pointer;
+}
+.task-check input { flex-shrink: 0; }
+/* Without min-width: 0, a flex item's default min-width is its own
+   content's min-content size — here, its longest unbreakable word — so on
+   a narrow screen the title refused to shrink below that, overflowed its
+   already-shrunk container, and visually overlapped the completed-by/date
+   text next to it instead of wrapping onto a second line. */
+.task-title { font-size: 13.5px; color: var(--text); min-width: 0; }
+
+/* The trailing bits (Final badge, completed-by/date, delete button) as one
+   unit — lets them wrap as a group onto their own line under the title on
+   a narrow screen, instead of each deciding independently whether it fits
+   and ending up vertically centred against a title that's now two lines
+   tall (which is what caused the overlap in the first place). */
+.task-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; flex-shrink: 0; }
+
+@media (max-width: 480px) {
+  .task-meta { flex-basis: 100%; margin: 4px 0 0 26px; }
+}
+.task-row.done .task-title { color: var(--text-muted); text-decoration: line-through; }
+
+.badge-final { background: var(--purple-bg); color: var(--purple); flex-shrink: 0; }
+
+.checkbox-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 400;
+  font-size: 13px;
+  margin: 10px 0 0;
+}
+.checkbox-inline input { margin: 0; }
+
+.error {
+  background: var(--red-bg);
+  color: var(--red);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-size: 12.5px;
+  margin-bottom: 12px;
+}
+
+.hint { text-align: center; font-size: 12px; margin-top: 14px; color: var(--text-muted); }
+
+code {
+  background: var(--gray-bg);
+  padding: 1px 5px;
+  border-radius: 4px;
+  color: var(--amber);
+}
+
+/* ---- login page ---- */
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.auth-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-hover);
+  padding: 34px 30px;
+  width: 100%;
+  max-width: 380px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.brand-mark {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: var(--amber-solid);
+  color: var(--amber-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+/* ---- chips / filters ---- */
+
+.project-switcher, .filter-row, .dept-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.dept-tabs { margin-bottom: 18px; }
+
+.chip {
+  border: 1px solid var(--border-strong);
+  background: var(--card);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.chip.active {
+  background: var(--amber-solid);
+  border-color: var(--amber-solid);
+  color: var(--amber-ink);
+}
+
+.chip .count {
+  opacity: 0.7;
+  font-weight: 500;
+}
+
+/* ---- greeting / stats ---- */
+
+.greeting h1 { margin-bottom: 2px; }
+.greeting .date-line { color: var(--text-muted); font-size: 13.5px; }
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+@media (max-width: 760px) {
+  .stat-row { grid-template-columns: repeat(2, 1fr); }
+}
+
+.stat-row.cols-6 { grid-template-columns: repeat(6, 1fr); }
+@media (max-width: 980px) {
+  .stat-row.cols-6 { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 560px) {
+  .stat-row.cols-6 { grid-template-columns: repeat(2, 1fr); }
+}
+
+.stat-tile {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 16px 18px;
+}
+
+.stat-tile .num { font-size: 26px; font-weight: 700; color: var(--text); line-height: 1.1; }
+.stat-tile .label { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
+
+/* ---- alerts & banners ---- */
+
+.alert-list { display: flex; flex-direction: column; gap: 10px; }
+
+.alert-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: var(--amber-bg);
+  border: 1px solid rgba(180, 83, 9, 0.22);
+  border-radius: var(--radius-sm);
+  padding: 13px 15px;
+}
+
+.alert-card .icon { color: var(--amber); margin-top: 2px; }
+.alert-card .body { flex: 1; }
+.alert-card .title { font-weight: 700; color: var(--text); margin-bottom: 2px; }
+
+.alert-card.success {
+  background: var(--green-bg);
+  border-color: rgba(21, 128, 61, 0.22);
+}
+.alert-card.success .icon { color: var(--green); }
+
+.alert-card.info {
+  background: var(--blue-bg);
+  border-color: rgba(29, 78, 216, 0.22);
+}
+.alert-card.info .icon { color: var(--blue); }
+
+.banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.banner.info { background: var(--blue-bg); color: var(--blue); border: 1px solid rgba(29, 78, 216, 0.22); }
+.banner.warning { background: var(--amber-bg); color: var(--amber); border: 1px solid rgba(180, 83, 9, 0.22); }
+.banner.success { background: var(--green-bg); color: var(--green); border: 1px solid rgba(21, 128, 61, 0.22); }
+.banner .icon { margin-top: 1px; flex-shrink: 0; }
+
+/* ---- tables ---- */
+
+/* Wraps any table.doc-table so a wide one (many columns, long file lists)
+   scrolls inside itself on a narrow viewport instead of forcing the whole
+   page — and every page's outer gutters — to scroll horizontally. */
+.table-scroll {
+  overflow-x: auto;
+  position: relative;
+}
+
+/* A right-edge fade — generated on .table-scroll itself, not on the table
+   it wraps, so it stays put as a fixed hint instead of scrolling away with
+   the content — signals "more columns this way" on a narrow screen where a
+   7-column document table can't come close to fitting. Scoped to narrow
+   viewports only: above that width every table already fits, and the fade
+   would just be a stray mark with nothing to hint at. */
+@media (max-width: 700px) {
+  .table-scroll::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 22px;
+    background: linear-gradient(to right, transparent, var(--card));
+    pointer-events: none;
+  }
+}
+
+table.doc-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+}
+
+/* The 640px minimum keeps a wide multi-column table (progress bars, badges,
+   file chips) from squeezing unreadable — but it also forces that same
+   width on a genuinely simple 2-3 column table, giving it a pointless
+   horizontal scroll for content that would otherwise just fit. Opt out per
+   table with this modifier rather than removing the default everywhere. */
+table.doc-table.compact { min-width: 0; }
+
+.doc-table th {
+  text-align: left;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.doc-table td {
+  padding: 13px 10px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.doc-table tr:last-child td { border-bottom: none; }
+.doc-table tbody tr:hover { background: var(--card-alt); }
+.doc-table tbody tr.clickable-row { cursor: pointer; }
+
+.doc-type {
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* a project's own small brand mark, next to its name wherever it's listed */
+.project-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.01em;
+  flex-shrink: 0;
+}
+.project-name-row { display: flex; align-items: center; gap: 10px; }
+
+/* department category tag on a Team Activity entry */
+.dept-tag { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; padding: 2px 7px; border-radius: 999px; flex-shrink: 0; }
+.dept-tag.dept-engineering { background: var(--blue-bg); color: var(--blue); }
+.dept-tag.dept-tenders { background: var(--purple-bg); color: var(--purple); }
+.dept-tag.dept-store { background: var(--teal-bg); color: var(--teal); }
+.dept-tag.dept-general { background: var(--gray-bg); color: var(--text-muted); }
+
+.progress-cell { min-width: 140px; }
+
+.progress-track {
+  background: var(--gray-bg);
+  border-radius: 999px;
+  height: 7px;
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.progress-fill {
+  background: var(--amber-solid);
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.25s ease;
+}
+
+.progress-fill.complete { background: var(--green-solid); }
+
+/* segmented progress bar: today's contribution shown as its own visible
+   slice rather than blended into one flat percentage */
+.progress-track.segmented { display: flex; }
+.progress-track.segmented .progress-fill { border-radius: 0; flex-shrink: 0; }
+
+.progress-pct { font-size: 12px; color: var(--text-muted); }
+
+.badge {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.badge-approved { background: var(--green-bg); color: var(--green); }
+.badge-progress { background: var(--amber-bg); color: var(--amber); }
+.badge-draft { background: var(--gray-bg); color: var(--text-muted); }
+.badge-stale { background: var(--red-bg); color: var(--red); }
+
+/* document type tags */
+.type-tag { display: inline-block; padding: 3px 9px; border-radius: 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.02em; }
+.type-amber { background: var(--amber-bg); color: var(--amber); }
+.type-blue { background: var(--blue-bg); color: var(--blue); }
+.type-purple { background: var(--purple-bg); color: var(--purple); }
+.type-orange { background: var(--orange-bg); color: var(--orange); }
+.type-pink { background: var(--pink-bg); color: var(--pink); }
+.type-teal { background: var(--teal-bg); color: var(--teal); }
+.type-gray { background: var(--gray-bg); color: var(--text-muted); }
+
+/* file attachment buttons */
+.file-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.file-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border-strong);
+  background: var(--card-alt);
+  border-radius: var(--radius-sm);
+  padding: 7px 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text);
+}
+.file-btn:hover { filter: brightness(0.97); }
+.file-pdf { color: var(--red); }
+.file-excel { color: var(--green); }
+.file-drawing { color: var(--blue); }
+.file-word { color: var(--purple); }
+.file-image { color: var(--pink); }
+.file-generic { color: var(--text-muted); }
+.no-files-note { color: var(--text-muted); font-size: 12.5px; font-style: italic; margin: 0 0 6px; }
+
+/* a file chip pairs the view button with a small "replace this one" action */
+.file-chip { display: inline-flex; align-items: stretch; }
+.file-chip .file-btn {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: none;
+}
+.file-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  border: 1px solid var(--border-strong);
+  background: var(--card-alt);
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0;
+}
+.file-icon-btn .icon { width: 13px; height: 13px; }
+.file-icon-btn:hover { color: var(--text); filter: brightness(0.97); }
+.file-chip .file-icon-btn {
+  border-top-right-radius: var(--radius-sm);
+  border-bottom-right-radius: var(--radius-sm);
+}
+.file-row > .file-icon-btn {
+  border-radius: var(--radius-sm);
+}
+
+.row-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+/* ---- activity feed ---- */
+
+.activity-feed {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 560px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.activity-feed li {
+  padding: 12px 10px;
+  margin: 0 -10px;
+  border-bottom: 1px solid var(--border);
+  border-radius: 8px;
+  transition: background 0.15s ease;
+}
+
+.activity-feed li:hover { background: var(--card-alt); }
+.activity-feed li:last-child { border-bottom: none; }
+
+.activity-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4px 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 3px;
+}
+
+.activity-doc { font-weight: 700; color: var(--text); }
+.activity-project { font-weight: 600; color: var(--text-muted); }
+
+.kind-tag {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 2px 7px;
+  border-radius: 999px;
+}
+.kind-document { background: var(--blue-bg); color: var(--blue); }
+.kind-report { background: var(--teal-bg); color: var(--teal); }
+
+/* ---- site reports ---- */
+
+.report-form textarea { min-height: 90px; }
+
+/* ---- modal ---- */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 50;
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: var(--card);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  padding: 24px;
+  width: 100%;
+  max-width: 440px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-hover);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+/* ---- project cards (dashboard + admin) ---- */
+
+.grid-cards {
+  display: grid;
+  /* auto-fit (not auto-fill): with fewer cards than would fit as separate
+     280px columns, auto-fill still reserves the extra column tracks —
+     empty, but taking up width — which is exactly the dangling blank strip
+     this was leaving on a wide screen with only 3 cards. auto-fit collapses
+     those empty tracks and lets the real cards stretch to fill the row. */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+/* Opt-in modifier (see .layout-grid.stretch): matches every card in the row
+   to whichever is naturally tallest, instead of each sizing to its own
+   content — so cards with less to show don't just end early and leave a
+   card-shaped gap next to a fuller neighbour. */
+.grid-cards.stretch { align-items: stretch; }
+.grid-cards.stretch .card { display: flex; flex-direction: column; }
+
+.project-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.project-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-1px);
+}
+
+.project-card .card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.project-card .meta-line {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.dept-progress-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12.5px;
+  padding: 3px 0;
+}
+
+.dept-progress-row .dept-name { color: var(--text-muted); }
+.dept-progress-row .dept-val { font-weight: 700; color: var(--text); }
+
+.placeholder-note {
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 30px 16px;
+  color: var(--text-muted);
+}
+
+/* ---- admin app shell (sidebar) ---- */
+
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+  align-items: stretch;
+}
+
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--sidebar-border);
+  color: var(--sidebar-text);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid var(--sidebar-border);
+}
+
+.sidebar-brand .brand-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: var(--amber-solid);
+  color: var(--sidebar-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.sidebar-brand strong { display: block; color: #fff; font-size: 14.5px; font-weight: 600; line-height: 1.3; }
+
+.nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  padding: 12px;
+}
+
+.nav-group-label {
+  padding: 16px 8px 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--sidebar-muted);
+}
+.nav-group-label:first-child { padding-top: 4px; }
+
+.nav-item {
+  display: block;
+  padding: 9px 10px;
+  border-radius: var(--radius-sm);
+  color: var(--sidebar-text);
+  font-size: 13.5px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  text-align: left;
+  width: 100%;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.nav-item:hover { background: var(--sidebar-hover); color: #fff; }
+
+.nav-item.active {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--amber-solid);
+  font-weight: 600;
+}
+
+.sidebar-note {
+  margin: 12px;
+  margin-top: auto;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--sidebar-border);
+  border-radius: var(--radius-sm);
+  padding: 12px 13px;
+  font-size: 11.5px;
+  color: #9aa0ab;
+  line-height: 1.5;
+}
+.sidebar-note strong {
+  display: block;
+  color: #d3d7de;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+
+/* Below ~860px, a fixed 240px side column has nowhere to shrink to — it was
+   eating a third or more of the viewport on a narrow window/phone, squeezing
+   every card and table into a sliver. Below that width the sidebar becomes a
+   compact horizontal strip above the content instead, so the content column
+   gets the full viewport width back. */
+@media (max-width: 860px) {
+  .app-shell { flex-direction: column; }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 6px;
+    padding: 10px 14px;
+  }
+
+  .sidebar-brand { padding: 0; border-bottom: none; margin-right: 4px; }
+
+  /* flex: 1 1 100% (not none) — nav-list needs to actually claim the full
+     row width for its own flex-wrap to wrap nav-items *within* that width;
+     otherwise it sizes to its content and the row (and the whole page)
+     overflows sideways instead of wrapping. */
+  .nav-list { flex-direction: row; flex-wrap: wrap; flex: 1 1 100%; padding: 0; gap: 4px; min-width: 0; }
+  .nav-group-label { display: none; }
+  .nav-item { width: auto; padding: 6px 10px; font-size: 12.5px; }
+
+  .sidebar-note { display: none; }
+}
+
+/* A long role tag ("Engineering — Department Head") plus the avatar and
+   two buttons don't all fit on one line on a phone — without somewhere to
+   wrap, flex's default shrink-to-min-content lets the *button text itself*
+   wrap ("Log out" splitting mid-word). Letting the row wrap instead keeps
+   every label on one line, just across two rows. */
+@media (max-width: 560px) {
+  .user-box { flex-wrap: wrap; justify-content: flex-end; row-gap: 6px; }
+}
+
+.main-area {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* topbar variant with search + notifications, used on the admin overview */
+.search-box {
+  flex: 1;
+  max-width: 420px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--card-alt);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  padding: 8px 14px;
+  color: var(--text-muted);
+}
+.search-box input {
+  border: none;
+  background: none;
+  outline: none;
+  flex: 1;
+  font-size: 13px;
+  color: var(--text);
+  padding: 0;
+  margin: 0;
+}
+.search-box .icon { color: var(--text-muted); }
+
+.icon-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid var(--border-strong);
+  background: var(--card);
+  color: var(--text-muted);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.icon-btn:hover { background: var(--card-alt); }
+.icon-btn .dot {
+  position: absolute;
+  top: 6px;
+  right: 7px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--red);
+  border: 1.5px solid var(--card);
+}
+
+/* stat tile trend + accent bar */
+.stat-tile .trend { font-size: 11.5px; margin-top: 6px; display: flex; align-items: center; gap: 4px; }
+.stat-tile .trend.up { color: var(--green); }
+.stat-tile .trend.down { color: var(--red); }
+.stat-tile .bar { height: 3px; border-radius: 999px; margin-top: 12px; background: var(--gray-bg); }
+
+/* ops overview: project progress rows (physical + financial) */
+.ops-row {
+  padding: 14px 10px;
+  margin: 0 -10px;
+  border-bottom: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.ops-row:hover { background: var(--card-alt); }
+.ops-row:last-child { border-bottom: none; }
+.ops-row-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 10px; }
+.ops-row-head strong { display: block; font-size: 14.5px; color: var(--text); margin-top: 2px; }
+.ops-bar-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+
+.ops-row-today { margin-top: 8px; }
+.today-pill { display: inline-block; font-size: 11.5px; font-weight: 600; padding: 2px 9px; border-radius: 999px; }
+.today-pill.today-done { background: var(--green-bg); color: var(--green); }
+.today-pill.today-info { background: var(--blue-bg); color: var(--blue); }
+.today-pill.today-muted { background: var(--gray-bg); color: var(--text-muted); }
+
+/* ---- toast ---- */
+
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--text);
+  border: 1px solid var(--border-strong);
+  color: var(--card);
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  box-shadow: var(--shadow-hover);
+  z-index: 60;
+}

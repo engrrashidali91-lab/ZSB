@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Store &amp; Inventory — ZSB</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <span class="brand-mark">Z</span>
+        <strong>ZSB</strong>
+      </div>
+
+      <nav class="nav-list" id="navList"></nav>
+
+      <div class="sidebar-note" id="sidebarNote"></div>
+    </aside>
+
+    <div class="main-area">
+      <header class="topbar">
+        <div></div>
+        <div class="user-box">
+          <div class="user-avatar" id="userAvatar"></div>
+          <div class="user-identity">
+            <span id="userName"></span>
+            <span class="role-tag" id="roleTag"></span>
+          </div>
+          <a href="profile.html" class="btn btn-ghost btn-sm">Profile</a>
+          <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
+        </div>
+      </header>
+
+      <main class="container">
+        <div class="project-head">
+          <div>
+            <p class="eyebrow">INVENTORY</p>
+            <h1>Store &amp; Inventory</h1>
+            <p class="muted" id="projectContextLine"></p>
+          </div>
+          <div style="display:flex; align-items:center; gap:14px;">
+            <select id="projectSelect"></select>
+            <span class="badge" id="statusBadge"></span>
+          </div>
+        </div>
+
+        <div id="deptBanner"></div>
+        <div id="statusBanner"></div>
+
+        <section class="block">
+          <div class="section-title">
+            <h2>Materials</h2>
+            <button class="btn btn-primary btn-sm" id="newMaterialBtn">+ Add material</button>
+          </div>
+          <div class="card">
+            <div class="table-scroll">
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th>Material</th>
+                    <th class="progress-cell">Remaining</th>
+                    <th>In</th>
+                    <th>Out</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="materialTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="block">
+          <div class="section-title">
+            <h2>Stock Ledger — In / Out</h2>
+            <button class="btn btn-primary btn-sm" id="newMovementBtn">+ Record movement</button>
+          </div>
+          <div class="card">
+            <div class="table-scroll">
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Material</th>
+                    <th>Qty</th>
+                    <th>Description</th>
+                    <th>Voucher</th>
+                  </tr>
+                </thead>
+                <tbody id="ledgerBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- New material modal -->
+  <div class="modal-overlay" id="newMaterialModal">
+    <div class="modal">
+      <h3>New material</h3>
+      <label>Material name
+        <input type="text" id="newMaterialName" placeholder="e.g. Cement (OPC)" required />
+      </label>
+      <label>Unit
+        <input type="text" id="newMaterialUnit" placeholder="e.g. bags, tons, cft" required />
+      </label>
+      <label>Opening stock (optional)
+        <input type="number" id="newMaterialOpening" min="0" placeholder="0" />
+      </label>
+      <p class="error" id="newMaterialError" hidden></p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" data-close-modal="newMaterialModal">Cancel</button>
+        <button class="btn btn-primary" id="confirmNewMaterial">Add material</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Record stock movement modal -->
+  <div class="modal-overlay" id="movementModal">
+    <div class="modal">
+      <h3>Record stock movement</h3>
+      <label>Material
+        <select id="movementMaterial"></select>
+      </label>
+      <label>Movement type
+        <select id="movementType">
+          <option value="IN">Add inventory — delivery received</option>
+          <option value="OUT">Reduce inventory — issued to site</option>
+        </select>
+      </label>
+      <label>Quantity
+        <input type="number" id="movementQty" min="1" placeholder="e.g. 500" required />
+      </label>
+      <label><span id="movementDescriptionLabel">Reason / description</span>
+        <input type="text" id="movementDescription" placeholder="e.g. Delivery — Al-Fateh Traders" required />
+      </label>
+      <label><span id="movementVoucherLabel">Voucher / reference no.</span>
+        <input type="text" id="movementVoucherId" placeholder="e.g. INV-1050 or GP-2211" required />
+      </label>
+      <label><span id="movementFileLabel">Attach voucher file (optional)</span>
+        <input type="file" id="movementFile" />
+      </label>
+      <p class="error" id="movementError" hidden></p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" data-close-modal="movementModal">Cancel</button>
+        <button class="btn btn-primary" id="confirmMovement">Record movement</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/store.js"></script>
+</body>
+</html>

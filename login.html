@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign in — ZSB</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <div class="auth-page">
+    <div class="auth-card">
+      <p style="margin:0 0 14px;"><a href="index.html" class="btn-link" style="font-size:12.5px;">← Back to website</a></p>
+      <div class="brand">
+        <div class="brand-mark">Z</div>
+        <div>
+          <h1>ZSB</h1>
+          <p class="muted small">Project &amp; document tracking</p>
+        </div>
+      </div>
+
+      <form id="loginForm" novalidate>
+        <label>Username
+          <input type="text" id="username" placeholder="e.g. user1" autocomplete="username" required />
+        </label>
+        <label>Password
+          <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" required />
+        </label>
+        <p style="margin:-8px 0 14px;"><a href="forgot-password.html" class="btn-link" style="font-size:12.5px;">Forgot password?</a></p>
+        <label>Role
+          <select id="role" required>
+            <option value="engineering_head">Engineering — Department Head</option>
+            <option value="tenders_head">Tenders — Department Head</option>
+            <option value="store_head">Store &amp; Inventory — Department Head</option>
+            <option value="admin">Admin</option>
+            <option value="accountant">Accountant</option>
+          </select>
+        </label>
+
+        <p class="error" id="loginError" hidden></p>
+
+        <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+      </form>
+
+      <p class="hint muted">
+        This is a demo build — username and password are filled in for you. Pick a role above and sign in, or switch
+        role to try someone else (their demo login fills in automatically). Every account uses password
+        <strong>root</strong>.
+      </p>
+    </div>
+  </div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/login.js"></script>
+</body>
+</html>

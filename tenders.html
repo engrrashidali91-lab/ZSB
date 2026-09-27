@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tenders — ZSB</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <span class="brand-mark">Z</span>
+        <strong>ZSB</strong>
+      </div>
+
+      <nav class="nav-list" id="navList"></nav>
+
+      <div class="sidebar-note" id="sidebarNote"></div>
+    </aside>
+
+    <div class="main-area">
+      <header class="topbar">
+        <div></div>
+        <div class="user-box">
+          <div class="user-avatar" id="userAvatar"></div>
+          <div class="user-identity">
+            <span id="userName"></span>
+            <span class="role-tag" id="roleTag"></span>
+          </div>
+          <a href="profile.html" class="btn btn-ghost btn-sm">Profile</a>
+          <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
+        </div>
+      </header>
+
+      <main class="container">
+        <div class="project-head">
+          <div>
+            <p class="eyebrow">TENDERS</p>
+            <h1>Tenders</h1>
+            <p class="muted" id="projectContextLine"></p>
+          </div>
+          <div style="display:flex; align-items:center; gap:14px;">
+            <select id="projectSelect"></select>
+            <span class="badge" id="statusBadge"></span>
+          </div>
+        </div>
+
+        <div id="deptBanner"></div>
+        <div id="statusBanner"></div>
+
+        <div class="section-title">
+          <h2>Tender activities</h2>
+          <button class="btn btn-primary btn-sm" id="newDocBtn">+ New activity</button>
+        </div>
+        <div class="filter-row" id="typeFilterRow" style="margin-bottom:16px;"></div>
+        <div class="card">
+          <div class="table-scroll">
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Title</th>
+                  <th class="progress-cell">Progress</th>
+                  <th>Status</th>
+                  <th>Files</th>
+                  <th>Last updated</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="docTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Tasks modal — an activity's checklist drives its progress -->
+  <div class="modal-overlay" id="tasksModal">
+    <div class="modal" style="max-width:700px;">
+      <h3 id="tasksDocLabel"></h3>
+      <p class="muted small" id="tasksDocMeta" style="margin-top:-6px;"></p>
+
+      <div class="task-progress-summary">
+        <div class="progress-track"><div class="progress-fill" id="tasksProgressFill" style="width:0%"></div></div>
+        <p class="muted small" id="tasksProgressLabel"></p>
+      </div>
+
+      <ul class="task-list" id="taskList"></ul>
+
+      <form id="addTaskForm">
+        <label>Add a task
+          <input type="text" id="newTaskTitle" placeholder="e.g. Reviewed by tender committee" />
+        </label>
+        <label class="checkbox-inline">
+          <input type="checkbox" id="newTaskFinal" />
+          <span>This is the final task — completing it finishes the activity</span>
+        </label>
+        <div class="modal-actions" style="justify-content:flex-start; margin-top:2px;">
+          <button type="submit" class="btn btn-secondary btn-sm">+ Add task</button>
+        </div>
+      </form>
+      <p class="muted small" id="tasksReadOnlyNote" hidden>You're viewing this read-only — only Tenders' own head can add or change tasks here.</p>
+
+      <div class="modal-actions">
+        <button class="btn btn-secondary" data-close-modal="tasksModal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- New activity modal -->
+  <div class="modal-overlay" id="newDocModal">
+    <div class="modal">
+      <h3>New activity</h3>
+      <label>Activity type
+        <select id="newDocType"></select>
+      </label>
+      <p class="muted small" id="newDocTypeNote" style="margin-top:-6px;"></p>
+      <label id="newDocTypeOtherWrap" hidden>Custom type name
+        <input type="text" id="newDocTypeOther" placeholder="e.g. Addendum, Pre-Bid Minutes" />
+      </label>
+      <label>Title
+        <input type="text" id="newDocTitle" placeholder="e.g. BOQ — Bill of Quantities" required />
+      </label>
+      <label>Files (optional)
+        <input type="file" id="newDocFiles" multiple />
+      </label>
+      <p class="muted small" id="newDocChecklistNote"></p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" data-close-modal="newDocModal">Cancel</button>
+        <button class="btn btn-primary" id="confirmNewDoc">Create activity</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/tenders.js"></script>
+</body>
+</html>

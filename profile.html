@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Profile — ZSB</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <span class="brand-mark">Z</span>
+        <strong>ZSB</strong>
+      </div>
+
+      <nav class="nav-list" id="navList"></nav>
+
+      <div class="sidebar-note" id="sidebarNote"></div>
+    </aside>
+
+    <div class="main-area">
+      <header class="topbar">
+        <div></div>
+        <div class="user-box">
+          <div class="user-avatar" id="userAvatar"></div>
+          <div class="user-identity">
+            <span id="userName"></span>
+            <span class="role-tag" id="roleTag"></span>
+          </div>
+          <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
+        </div>
+      </header>
+
+      <main class="container">
+        <div class="page-head">
+          <div>
+            <h1>My Profile</h1>
+            <p class="muted">Your account details and password.</p>
+          </div>
+        </div>
+
+        <div class="layout-grid">
+          <section class="card main-col">
+            <div class="card-head">
+              <h2>Account details</h2>
+            </div>
+            <div class="profile-row"><span class="profile-label">Name</span><span id="profName"></span></div>
+            <div class="profile-row"><span class="profile-label">Username</span><span id="profUsername"></span></div>
+            <div class="profile-row"><span class="profile-label">Email</span><span id="profEmail"></span></div>
+            <div class="profile-row"><span class="profile-label">Role</span><span id="profRole"></span></div>
+            <p class="muted small" style="margin-top:14px;">
+              Name, username and email are managed by Admin in this prototype — get in touch if any of this needs correcting.
+            </p>
+          </section>
+
+          <aside class="card side-col">
+            <div class="card-head">
+              <h2>Change password</h2>
+            </div>
+            <form id="changePasswordForm">
+              <label>Current password
+                <input type="password" id="currentPassword" autocomplete="current-password" required />
+              </label>
+              <label>New password
+                <input type="password" id="newPassword" autocomplete="new-password" required />
+              </label>
+              <label>Confirm new password
+                <input type="password" id="confirmPassword" autocomplete="new-password" required />
+              </label>
+
+              <p class="error" id="passwordError" hidden></p>
+
+              <button type="submit" class="btn btn-primary btn-sm">Update password</button>
+            </form>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/profile.js"></script>
+</body>
+</html>

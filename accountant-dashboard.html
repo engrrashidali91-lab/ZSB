@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Accounts — ZSB</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <span class="brand-mark">Z</span>
+        <strong>ZSB</strong>
+      </div>
+
+      <nav class="nav-list" id="navList"></nav>
+
+      <div class="sidebar-note">
+        <strong>Demo build</strong>
+        Accounts sees Material Requests, Expenses and Purchase Orders once Admin has approved them, plus its own payment ledger.
+      </div>
+    </aside>
+
+    <div class="main-area">
+      <header class="topbar">
+        <div></div>
+        <div class="user-box">
+          <div class="user-avatar" id="userAvatar"></div>
+          <div class="user-identity">
+            <span id="userName"></span>
+            <span class="role-tag">Accountant</span>
+          </div>
+          <a href="profile.html" class="btn btn-ghost btn-sm">Profile</a>
+          <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
+        </div>
+      </header>
+
+      <main class="container">
+        <p class="eyebrow">ACCOUNTS VIEW</p>
+        <h1>Accounts Overview</h1>
+        <p class="muted" style="margin-bottom:20px;">Admin-approved demands awaiting payment, and the payment ledger.</p>
+
+        <div class="stat-row" id="statRow"></div>
+
+        <section class="block">
+          <div class="section-title">
+            <h2>Pending Processing</h2>
+            <span class="muted small">Material Requests, Expenses and Purchase Orders Admin has approved — needs payment or a voucher raised</span>
+          </div>
+          <div class="card">
+            <div class="table-scroll">
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Category</th>
+                    <th>Title</th>
+                    <th>Project</th>
+                    <th>Requested By</th>
+                    <th>Approved</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="pendingBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="block">
+          <div class="section-title">
+            <h2>Processed History</h2>
+            <span class="muted small">Demands Accounts has already paid out or actioned</span>
+          </div>
+          <div class="card">
+            <div class="table-scroll">
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Category</th>
+                    <th>Title</th>
+                    <th>Project</th>
+                    <th>Amount</th>
+                    <th>Method</th>
+                    <th>Voucher / Ref</th>
+                  </tr>
+                </thead>
+                <tbody id="processedBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="block">
+          <div class="section-title">
+            <h2>Record a Payment</h2>
+            <span class="muted small">Day-to-day spend that never went through a department head's approval — a utility bill, wages, a direct vendor payment</span>
+          </div>
+          <div class="card">
+            <form id="paymentForm">
+              <label>Category
+                <select id="paymentCategory"></select>
+              </label>
+              <label>Payee / Vendor
+                <input type="text" id="paymentPayee" placeholder="e.g. K-Electric" required />
+              </label>
+              <label>Amount (PKR)
+                <input type="number" id="paymentAmount" min="1" placeholder="e.g. 25000" required />
+              </label>
+              <label>Method
+                <select id="paymentMethod">
+                  <option value="Bank Transfer">Bank Transfer</option>
+                  <option value="Cheque">Cheque</option>
+                  <option value="Cash">Cash</option>
+                </select>
+              </label>
+              <label>Project (optional)
+                <select id="paymentProject">
+                  <option value="">Not project-specific</option>
+                </select>
+              </label>
+              <label>Note (optional)
+                <textarea id="paymentNote" rows="2" placeholder="What this payment was for…"></textarea>
+              </label>
+              <button type="submit" class="btn btn-primary btn-sm" style="margin-top:8px;">Record payment</button>
+            </form>
+          </div>
+        </section>
+
+        <section class="block">
+          <div class="section-title">
+            <h2>Payment Ledger</h2>
+            <span class="muted small">Every payment recorded directly here, most recent first</span>
+          </div>
+          <div class="card">
+            <div class="table-scroll">
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Category</th>
+                    <th>Payee</th>
+                    <th>Project</th>
+                    <th>Amount</th>
+                    <th>Method</th>
+                    <th>Recorded By</th>
+                  </tr>
+                </thead>
+                <tbody id="ledgerBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Process payment modal -->
+  <div class="modal-overlay" id="processModal">
+    <div class="modal">
+      <h3>Process payment</h3>
+      <p class="muted small" id="processModalLabel" style="margin-top:-6px;"></p>
+      <label>Amount paid (PKR)
+        <input type="number" id="processAmount" min="1" placeholder="e.g. 84000" required />
+      </label>
+      <label>Payment method
+        <select id="processMethod">
+          <option value="Bank Transfer">Bank Transfer</option>
+          <option value="Cheque">Cheque</option>
+          <option value="Cash">Cash</option>
+        </select>
+      </label>
+      <label>Voucher / reference no. (optional)
+        <input type="text" id="processVoucher" placeholder="e.g. V-2026-0417" />
+      </label>
+      <label>Note (optional)
+        <textarea id="processNote" rows="2" placeholder="Anything Admin or the requester should know…"></textarea>
+      </label>
+      <p class="error" id="processError" hidden></p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" data-close-modal="processModal">Cancel</button>
+        <button class="btn btn-primary" id="confirmProcess">Mark processed</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/accountant-dashboard.js"></script>
+</body>
+</html>

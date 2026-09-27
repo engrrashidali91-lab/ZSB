@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Team Status — ZSB</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <span class="brand-mark">Z</span>
+        <strong>ZSB</strong>
+      </div>
+
+      <nav class="nav-list" id="navList"></nav>
+
+      <div class="sidebar-note">
+        <strong>Demo build</strong>
+        Sample data. Engineering, Tenders and Store &amp; Inventory show real records — General has no workspace built yet.
+      </div>
+    </aside>
+
+    <div class="main-area">
+      <header class="topbar">
+        <div></div>
+        <div class="user-box">
+          <div class="user-avatar" id="userAvatar"></div>
+          <div class="user-identity">
+            <span id="userName"></span>
+            <span class="role-tag">Admin</span>
+          </div>
+          <a href="profile.html" class="btn btn-ghost btn-sm">Profile</a>
+          <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
+        </div>
+      </header>
+
+      <main class="container">
+        <p class="eyebrow">ADMIN VIEW</p>
+        <h1>Team Status</h1>
+        <p class="muted" style="margin-bottom:20px;">What every department head has done today, across all their projects — and why, when they haven't.</p>
+
+        <div class="stat-row" id="statRow"></div>
+
+        <div class="grid-cards stretch" id="headCards"></div>
+      </main>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/admin-team-status.js"></script>
+</body>
+</html>

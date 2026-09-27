@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project Report — ZSB</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <span class="brand-mark">Z</span>
+        <strong>ZSB</strong>
+      </div>
+
+      <nav class="nav-list" id="navList"></nav>
+
+      <div class="sidebar-note">
+        <strong>Demo build</strong>
+        Sample data. Engineering, Tenders and Store &amp; Inventory show real records — General has no workspace built yet.
+      </div>
+    </aside>
+
+    <div class="main-area">
+      <header class="topbar">
+        <div></div>
+        <div class="user-box">
+          <div class="user-avatar" id="userAvatar"></div>
+          <div class="user-identity">
+            <span id="userName"></span>
+            <span class="role-tag">Admin</span>
+          </div>
+          <a href="profile.html" class="btn btn-ghost btn-sm">Profile</a>
+          <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
+        </div>
+      </header>
+
+      <main class="container">
+        <div class="project-head">
+          <div>
+            <p class="eyebrow">ADMIN VIEW</p>
+            <h1>Project Report</h1>
+            <p class="muted" id="projectContextLine"></p>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+            <select id="projectSelect"></select>
+            <span class="badge" id="statusBadge"></span>
+            <button class="btn btn-secondary btn-sm" id="editProjectBtn">Edit</button>
+            <button class="btn btn-ghost btn-sm" id="deleteProjectBtn">Delete</button>
+            <button class="btn btn-primary btn-sm" id="newProjectBtn">+ New project</button>
+          </div>
+        </div>
+
+        <div class="stat-row" id="statRow"></div>
+
+        <section class="card" id="completionCard" style="margin-bottom:20px;"></section>
+
+        <div class="layout-grid stretch">
+          <section class="card main-col">
+            <div class="dept-tabs" id="deptTabs"></div>
+            <div id="deptContent"></div>
+          </section>
+
+          <aside class="card side-col">
+            <div class="card-head">
+              <div class="card-head-title">
+                <span class="card-icon amber">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </span>
+                <h2>Department Head</h2>
+              </div>
+            </div>
+            <div id="headStatusBody"></div>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Activity detail modal — read-only view of one activity's progress, checklist,
+       files and history, opened from the "View" action on the Engineering/Tenders table -->
+  <div class="modal-overlay" id="docDetailModal">
+    <div class="modal" style="max-width:720px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+        <h3 id="docDetailLabel" style="margin:0;"></h3>
+        <span class="badge" id="docDetailBadge"></span>
+      </div>
+      <p class="muted small" id="docDetailMeta" style="margin-top:-6px;"></p>
+
+      <div class="task-progress-summary">
+        <div class="progress-track"><div class="progress-fill" id="docDetailProgressFill" style="width:0%"></div></div>
+        <p class="muted small" id="docDetailProgressLabel"></p>
+      </div>
+
+      <h4 style="margin:18px 0 8px; font-size:13px;">Checklist</h4>
+      <ul class="task-list" id="docDetailTaskList"></ul>
+
+      <h4 style="margin:18px 0 8px; font-size:13px;">Files</h4>
+      <div id="docDetailFiles"></div>
+
+      <h4 style="margin:18px 0 8px; font-size:13px;">History</h4>
+      <ul class="activity-feed" id="docDetailHistory" style="max-height:180px;"></ul>
+
+      <div class="modal-actions">
+        <button class="btn btn-secondary" data-close-modal="docDetailModal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- New / Edit project modal — one shared form, toggled by projectModalMode -->
+  <div class="modal-overlay" id="projectModal">
+    <div class="modal">
+      <h3 id="projectModalTitle">New project</h3>
+      <label>Project name
+        <input type="text" id="projectNameInput" placeholder="e.g. Construction of New OPD Block – Swabi" />
+      </label>
+      <label>Client
+        <input type="text" id="projectClientInput" placeholder="e.g. Meridian Construction Ltd" />
+      </label>
+      <label>Project code
+        <input type="text" id="projectCodeInput" placeholder="e.g. ENG-2026-101" />
+      </label>
+      <label>Status
+        <select id="projectStatusInput">
+          <option value="pending">Pending</option>
+          <option value="in_progress">Active</option>
+          <option value="delayed">Delayed</option>
+          <option value="closed">Completed</option>
+        </select>
+      </label>
+      <label>Logo colour
+        <input type="color" id="projectLogoInput" value="#1d4ed8" />
+      </label>
+      <p class="error" id="projectModalError" hidden></p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" data-close-modal="projectModal">Cancel</button>
+        <button class="btn btn-primary" id="saveProjectBtn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/admin.js"></script>
+</body>
+</html>

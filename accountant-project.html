@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project Accounts — ZSB</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <span class="brand-mark">Z</span>
+        <strong>ZSB</strong>
+      </div>
+
+      <nav class="nav-list" id="navList"></nav>
+
+      <div class="sidebar-note">
+        <strong>Demo build</strong>
+        Every project's IN (money received) and OUT (money spent, by trade) accounts, kept by Accounts.
+      </div>
+    </aside>
+
+    <div class="main-area">
+      <header class="topbar">
+        <div></div>
+        <div class="user-box">
+          <div class="user-avatar" id="userAvatar"></div>
+          <div class="user-identity">
+            <span id="userName"></span>
+            <span class="role-tag">Accountant</span>
+          </div>
+          <a href="profile.html" class="btn btn-ghost btn-sm">Profile</a>
+          <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
+        </div>
+      </header>
+
+      <main class="container">
+        <div class="project-head">
+          <div>
+            <p class="eyebrow">PROJECT ACCOUNTS</p>
+            <h1 id="projectTitle"></h1>
+          </div>
+          <div style="display:flex; align-items:center; gap:14px;">
+            <select id="projectSelect"></select>
+            <span class="badge" id="statusBadge"></span>
+          </div>
+        </div>
+
+        <section class="block">
+          <div class="card">
+            <div class="section-title" style="margin-bottom:14px;">
+              <h2>Project Details</h2>
+            </div>
+            <form id="detailsForm">
+              <label>Date of Award
+                <input type="date" id="detailDateOfAward" />
+              </label>
+              <label>Cost (PKR)
+                <input type="number" id="detailCost" min="0" placeholder="Not set yet" />
+              </label>
+              <label>Work Order
+                <input type="text" id="detailWorkOrder" placeholder="e.g. WO-2026-0031" />
+              </label>
+              <button type="submit" class="btn btn-primary btn-sm" style="margin-top:8px;">Save details</button>
+            </form>
+          </div>
+        </section>
+
+        <div class="stat-row" id="statRow"></div>
+
+        <nav class="tabs" id="accountTabs" style="margin-bottom:16px;">
+          <button class="tab-btn active" data-tab="in">IN</button>
+          <button class="tab-btn" data-tab="out">OUT</button>
+        </nav>
+
+        <div class="tab-panel" data-panel="in">
+          <div id="inActivities"></div>
+
+          <section class="card" style="margin-top:18px;">
+            <div class="section-title" style="margin-bottom:10px;">
+              <h2>Add another activity</h2>
+            </div>
+            <form id="addActivityForm" style="display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap;">
+              <label style="flex:1; min-width:220px;">Activity name
+                <input type="text" id="newActivityName" placeholder="e.g. Escalation, Variation Order" required />
+              </label>
+              <button type="submit" class="btn btn-secondary btn-sm">+ Add activity</button>
+            </form>
+          </section>
+        </div>
+
+        <div class="tab-panel" data-panel="out" hidden>
+          <div id="outCategories"></div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Add a Bills entry -->
+  <div class="modal-overlay" id="billModal">
+    <div class="modal" style="max-width:560px;">
+      <h3>Add bill</h3>
+      <label>Serial No.
+        <input type="text" id="billSerialNo" placeholder="e.g. 12" />
+      </label>
+      <label>Date
+        <input type="date" id="billDate" required />
+      </label>
+      <label>Gross Amount (PKR)
+        <input type="number" id="billGrossAmount" min="0" placeholder="e.g. 1500000" required />
+      </label>
+      <div id="billDeductionFields"></div>
+      <p class="muted small" style="margin:10px 0 0;">Need another deduction column?</p>
+      <div style="display:flex; gap:8px; margin-top:6px;">
+        <input type="text" id="billNewDeductionLabel" placeholder="e.g. Stamp Duty" style="flex:1;" />
+        <button type="button" class="btn btn-secondary btn-sm" id="addDeductionTypeBtn">+ Add column</button>
+      </div>
+      <p class="error" id="billError" hidden></p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" data-close-modal="billModal">Cancel</button>
+        <button class="btn btn-primary" id="confirmBill">Add bill</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add an entry to a simple IN activity (Security, Mobilization, custom) -->
+  <div class="modal-overlay" id="activityEntryModal">
+    <div class="modal">
+      <h3 id="activityEntryTitle">Add entry</h3>
+      <label>Date
+        <input type="date" id="activityEntryDate" required />
+      </label>
+      <label>Description
+        <input type="text" id="activityEntryDesc" placeholder="e.g. Advance released" />
+      </label>
+      <label>Amount (PKR)
+        <input type="number" id="activityEntryAmount" min="0" placeholder="e.g. 250000" required />
+      </label>
+      <p class="error" id="activityEntryError" hidden></p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" data-close-modal="activityEntryModal">Cancel</button>
+        <button class="btn btn-primary" id="confirmActivityEntry">Add entry</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add an OUT expense entry -->
+  <div class="modal-overlay" id="outEntryModal">
+    <div class="modal">
+      <h3 id="outEntryTitle">Add expense</h3>
+      <label>Date
+        <input type="date" id="outEntryDate" required />
+      </label>
+      <label>Paid to
+        <input type="text" id="outEntryPayee" placeholder="e.g. Al-Fateh Contractors" required />
+      </label>
+      <label>Amount (PKR)
+        <input type="number" id="outEntryAmount" min="0" placeholder="e.g. 120000" required />
+      </label>
+      <label>Note (optional)
+        <input type="text" id="outEntryNote" placeholder="What this was for" />
+      </label>
+      <p class="error" id="outEntryError" hidden></p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" data-close-modal="outEntryModal">Cancel</button>
+        <button class="btn btn-primary" id="confirmOutEntry">Add expense</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/accountant-project.js"></script>
+</body>
+</html>

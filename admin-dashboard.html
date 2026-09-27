@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Operations Overview — ZSB</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <span class="brand-mark">Z</span>
+        <strong>ZSB</strong>
+      </div>
+
+      <nav class="nav-list" id="navList"></nav>
+
+      <div class="sidebar-note">
+        <strong>Demo build</strong>
+        Sample data. Engineering, Tenders and Store &amp; Inventory show real records — General has no workspace built yet.
+      </div>
+    </aside>
+
+    <div class="main-area">
+      <header class="topbar">
+        <div></div>
+        <div class="user-box">
+          <div class="user-avatar" id="userAvatar"></div>
+          <div class="user-identity">
+            <span id="userName"></span>
+            <span class="role-tag">Admin</span>
+          </div>
+          <a href="profile.html" class="btn btn-ghost btn-sm">Profile</a>
+          <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
+        </div>
+      </header>
+
+      <main class="container">
+        <p class="eyebrow">ADMIN VIEW</p>
+        <h1>Operations Overview</h1>
+        <p class="muted" style="margin-bottom:20px;">Progress across every project you oversee.</p>
+
+        <div class="stat-row" id="statRow"></div>
+
+        <div class="layout-grid">
+          <section class="card main-col">
+            <div class="card-head">
+              <div class="card-head-title">
+                <span class="card-icon blue">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                </span>
+                <h2>Project Progress</h2>
+              </div>
+              <a href="admin-reports.html" class="btn-link">View all →</a>
+            </div>
+            <div id="progressList"></div>
+          </section>
+
+          <aside class="card side-col">
+            <div class="card-head">
+              <div class="card-head-title">
+                <span class="card-icon purple">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                </span>
+                <h2>Inbox</h2>
+              </div>
+            </div>
+            <nav class="tabs" id="inboxTabs" style="margin-bottom:16px;">
+              <button class="tab-btn active" data-tab="approvals">Approvals <span class="badge badge-progress" id="approvalsCount"></span></button>
+              <button class="tab-btn" data-tab="messages">Messages <span class="badge badge-progress" id="messagesCount"></span></button>
+              <button class="tab-btn" data-tab="instructions">Instructions</button>
+            </nav>
+
+            <div class="tab-panel" data-panel="approvals">
+              <ul class="activity-feed" id="approvalsList"></ul>
+            </div>
+
+            <div class="tab-panel" data-panel="messages" hidden>
+              <ul class="activity-feed" id="headMessagesList"></ul>
+            </div>
+
+            <div class="tab-panel" data-panel="instructions" hidden>
+              <form id="instructionForm">
+                <label>Department
+                  <select id="instructionDept">
+                    <option value="engineering">Engineering</option>
+                    <option value="tenders">Tenders</option>
+                    <option value="store">Store &amp; Inventory</option>
+                    <option value="general">General</option>
+                  </select>
+                </label>
+                <label>Project (optional)
+                  <select id="instructionProject">
+                    <option value="">General — not project-specific</option>
+                  </select>
+                </label>
+                <textarea id="instructionNote" rows="3" placeholder="Instruction or reminder for this department…" required></textarea>
+                <button type="submit" class="btn btn-primary btn-sm" style="margin-top:8px;">Send</button>
+              </form>
+              <p class="muted small" style="margin:14px 0 6px;">Recently sent</p>
+              <ul class="activity-feed" id="sentInstructionsList"></ul>
+            </div>
+          </aside>
+        </div>
+
+        <section class="card">
+          <div class="card-head">
+            <div class="card-head-title">
+              <span class="card-icon teal">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              </span>
+              <h2>Team Activity</h2>
+            </div>
+            <span class="muted small">Every department head's recent actions, across all projects</span>
+          </div>
+          <nav class="tabs" id="teamActivityTabs" style="margin-bottom:12px;">
+            <button class="tab-btn active" data-dept="all">All</button>
+            <button class="tab-btn" data-dept="Engineering">Engineering</button>
+            <button class="tab-btn" data-dept="Tenders">Tenders</button>
+            <button class="tab-btn" data-dept="Store & Inventory">Store &amp; Inventory</button>
+            <button class="tab-btn" data-dept="General">General</button>
+          </nav>
+          <ul class="activity-feed" id="teamActivityList"></ul>
+        </section>
+
+        <section class="card">
+          <div class="card-head">
+            <div class="card-head-title">
+              <span class="card-icon amber">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              </span>
+              <h2>System Data</h2>
+            </div>
+          </div>
+          <p class="muted small" style="margin-bottom:14px;">
+            The whole system's data — projects, documents, activity, messages — is a single JSON structure kept in this
+            browser. Export it to inspect or back it up, import a JSON file to restore a previous export, or reset back
+            to the original sample data.
+          </p>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+            <button class="btn btn-secondary btn-sm" id="exportDataBtn">Export data (JSON)</button>
+            <label class="btn btn-secondary btn-sm" style="margin:0; cursor:pointer;">
+              Import data (JSON)
+              <input type="file" id="importDataInput" accept="application/json,.json" hidden />
+            </label>
+            <button class="btn btn-ghost btn-sm" id="resetDataBtn">Reset to sample data</button>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-head">
+            <div class="card-head-title">
+              <span class="card-icon green">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              </span>
+              <h2>Test Data</h2>
+            </div>
+          </div>
+          <p class="muted small" style="margin-bottom:14px;">
+            Demo/testing only — jump straight to a scenario instead of clicking through the app to set one up by
+            hand. Each button below changes today's data across every department with real tracking (Engineering,
+            Tenders and Store &amp; Inventory) and reloads the page so every view (this one, Team Status, each
+            department head's Dashboard, and the Project Report) reflects it consistently.
+          </p>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+            <button class="btn btn-secondary btn-sm" id="simulateTeamActiveBtn">Simulate: everyone made progress today</button>
+            <button class="btn btn-secondary btn-sm" id="simulateEngineeringQuietBtn">Simulate: Engineering quiet, rest of the team active</button>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/admin-dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard — ZSB</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <span class="brand-mark">Z</span>
+        <strong>ZSB</strong>
+      </div>
+
+      <nav class="nav-list" id="navList"></nav>
+
+      <div class="sidebar-note" id="sidebarNote"></div>
+    </aside>
+
+    <div class="main-area">
+      <header class="topbar">
+        <div></div>
+        <div class="user-box">
+          <div class="user-avatar" id="userAvatar"></div>
+          <div class="user-identity">
+            <span id="userName"></span>
+            <span class="role-tag" id="roleTag"></span>
+          </div>
+          <a href="profile.html" class="btn btn-ghost btn-sm">Profile</a>
+          <button class="btn btn-ghost btn-sm" id="logoutBtn">Log out</button>
+        </div>
+      </header>
+
+      <main class="container">
+        <div class="page-head">
+          <div>
+            <h1>Dashboard</h1>
+            <p class="muted">An overview of every project you're assigned to.</p>
+          </div>
+        </div>
+
+        <section class="block">
+          <div class="section-title"><h2>Alerts</h2></div>
+          <div class="alert-list" id="alertList"></div>
+        </section>
+
+        <section class="block">
+          <div class="section-title">
+            <div>
+              <h2>Projects &amp; Activity</h2>
+              <p class="muted small">Where things stand across everything assigned to you.</p>
+            </div>
+          </div>
+          <div class="layout-grid stretch">
+            <section class="card main-col">
+              <div class="card-head">
+                <div class="card-head-title">
+                  <span class="card-icon blue">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                  </span>
+                  <h2>My Projects</h2>
+                </div>
+              </div>
+              <p class="muted small">Open a project to work in your department, or check in on any other.</p>
+              <div class="table-scroll">
+                <table class="doc-table">
+                  <thead>
+                    <tr>
+                      <th>Project</th>
+                      <th>Status</th>
+                      <th>Last update</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="projectsTableBody"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <aside class="card side-col">
+              <div class="card-head">
+                <div class="card-head-title">
+                  <span class="card-icon teal">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                  </span>
+                  <h2>Team &amp; Activity</h2>
+                </div>
+              </div>
+
+              <nav class="tabs" id="teamTabs" style="margin-bottom:12px;">
+                <button class="tab-btn active" data-team-tab="activity">Activity</button>
+                <button class="tab-btn" data-team-tab="inbox">Inbox <span class="badge badge-progress" id="inboxCount" hidden></span></button>
+                <button class="tab-btn" data-team-tab="send">Send</button>
+              </nav>
+
+              <div class="tab-panel" data-team-panel="activity">
+                <p class="muted small">Activity updates and site reports across all your projects.</p>
+                <ul class="activity-feed" id="recentFeed"></ul>
+              </div>
+
+              <div class="tab-panel" data-team-panel="inbox" hidden>
+                <p class="muted small">Instructions from Admin and requests from other department heads, together.</p>
+                <ul class="activity-feed" id="inboxList"></ul>
+              </div>
+
+              <div class="tab-panel" data-team-panel="send" hidden>
+                <p class="muted small">A quick message, a request to another department, or something that needs formal sign-off from Admin — pick who this goes to and what it is.</p>
+                <form id="sendForm">
+                  <label>Send to
+                    <select id="sendTo"></select>
+                  </label>
+
+                  <div id="sendCategoryWrap">
+                    <label>What is this?
+                      <select id="sendCategory">
+                        <option value="Message">General message</option>
+                        <option value="Material Request">Material Request</option>
+                        <option value="Expense">Expense</option>
+                        <option value="Purchase Order">Purchase Order</option>
+                      </select>
+                    </label>
+                  </div>
+
+                  <div id="sendProjectWrap">
+                    <label>Project
+                      <select id="sendProject"></select>
+                    </label>
+                  </div>
+
+                  <div id="messageFields">
+                    <label>Message
+                      <textarea id="sendMessage" rows="3" placeholder="Describe the issue, message, or hurdle…"></textarea>
+                    </label>
+                  </div>
+
+                  <div id="approvalFields" hidden>
+                    <label>Title / details
+                      <input type="text" id="sendTitle" placeholder="e.g. Steel 40 tons — Block C" />
+                    </label>
+                    <label>Route to
+                      <select id="sendRoutedTo">
+                        <option value="Finance">Finance</option>
+                        <option value="Project Manager">Project Manager</option>
+                        <option value="Management">Management</option>
+                      </select>
+                    </label>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary btn-sm" style="margin-top:8px;">Send</button>
+                </form>
+                <p class="muted small" style="margin:14px 0 6px;">Sent by you</p>
+                <ul class="activity-feed" id="sentByYouList"></ul>
+              </div>
+            </aside>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/dashboard.js"></script>
+</body>
+</html>
